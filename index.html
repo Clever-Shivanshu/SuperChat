@@ -372,7 +372,7 @@
       join_input.setAttribute('maxlength', 15)
       join_input.placeholder = 'Write Your Name Here!!'
       join_input.onkeyup  = function(){
-        if(join_input.value.length > 0){
+        if(join_input.value.length > 1){
           join_button.classList.add('enabled')
           join_button.onclick = function(){
             parent.save_name(join_input.value)
