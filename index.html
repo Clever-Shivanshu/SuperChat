@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title> SuperChat | Made by cyber pixel studio</title>
+    <link href='https://fonts.googleapis.com/css?family=Bungee Outline' rel='stylesheet'/>
+    <link href='https://fonts.googleapis.com/css?family=Varela Round' rel='stylesheet'/>
+    <link href='https://fonts.googleapis.com/css?family=Bungee' rel='stylesheet'/>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-database.js"></script>
+    <link rel="shortcut icon" href="logo-modified.png" type="image/x-icon">
+
+    <style>
+        body{
+    /* https://www.color-hex.com/color/d3d3d3 */
+    background-color: rgb(255, 255, 255); /*#f6f6f6, EBEBD3, fafafa*/
+    font-family: Bungee Outline;
+    font-weight: 900;
+  
+    overflow: hidden;
+    animation: blur 0.5s ease-out;
+  
+  }
+  *{
+    outline: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+  #title_container{
+    width: 100%;
+    height: 225px;
+  
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+    background-color: #4056d6;/*#467599;*/
+    border-bottom: 5px solid #fff;
+    box-shadow: 0 0 30px -18px #1d30da;
+  
+  }
+  #title_inner_container{
+    width: 100%;
+    height: 100%;
+  
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+    /* background-color: #083D77; */
+    border-radius: 200px;
+  }
+  #title{
+    display: inline-block;
+    color: rgb(255, 255, 255);/*EBEBD3, C5283D*/
+    font-size: 55px;
+    letter-spacing: 2px;
+    user-select: none;
+  }
+  
+  #join_container{
+    width: 100%;
+    height: 200px;
+  
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+    float: left;
+    margin-top: 80px;
+  
+  }
+  #join_inner_container{
+    width: 50%;
+    height: 100%;
+  }
+  #join_input_container{
+    width: 100%;
+    height: 50px;
+  
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+    float: left;
+  }
+  #join_input{
+    width: 60%;
+    height: 40px;
+  
+    color: #1D3354;
+    font-family: Varela Round;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+    background-color: Transparent;
+    border-bottom: 2px dashed #1D3354;
+  
+  }
+  #join_input:focus{
+    box-shadow: 0 10px 30px -17px #1D3354;
+  }
+  #join_button_container{
+    width: 100%;
+    height: 50px;
+  
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+    float: left;
+  }
+  #join_button{
+    width: 60%;
+    height: 40px;
+  
+    font-family: Varela Round;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+    color: rgb(255, 255, 255);
+  }
+  
+  #chat_container{
+    width: 100%;
+    height: 450px;
+  
+    display: flex;
+    justify-content: center;
+  
+    float: left;
+    margin-top: 40px;
+    /* Fade in container */
+    animation: fadeIn 1s linear;
+  
+  }
+  #chat_inner_container{
+    width: 40%;
+    height: 100%;
+  }
+  #chat_content_container{
+    width: 100%;
+    height: 90%;
+  
+    float: left;
+    overflow-y: auto;
+    font-family: Varela Round;
+  
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  #chat_input_container{
+    width: 100%;
+    height: 10%;
+  
+    float: left;
+    border-bottom: 2px dashed #1D3354;
+    background-color: Transparent;
+  
+    padding-left: 15px;
+    padding-right: 15px;
+    font-family: Varela Round;
+    margin-top: 10px;
+  }
+  #chat_input{
+    width: 95%;
+    height: 100%;
+    float: left;
+    background-color: Transparent;
+    color: #1D3354;
+    font-size: 15px;
+  }
+  #chat_input_send{
+    width: 5%;
+    height: 100%;
+    float: left;
+    font-size: 18px;
+    background-color: Transparent;
+    text-align: right;
+    color: rgb(46, 38, 38);
+  }
+  #chat_input_send.enabled{
+    color: #0f1888;
+    background-color: Transparent;
+    cursor: pointer;
+  
+  }
+  #chat_logout_container{
+    width: 100%;
+    display: inline-block;
+  
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+    float: left;
+    margin-top: 20px;
+  }
+  #chat_logout{
+    color: #3c47e0;
+    cursor: pointer;
+  }
+  #chat_logout:hover{
+    text-decoration: underline;
+  }
+  .message_container{
+    width: 100%;
+    display: inline-block;
+    margin-bottom: 20px;
+  
+  }
+  .message_inner_container{
+    width: 100%;
+    display: inline-block;
+  
+    color: #1D3354;
+  }
+  .message_user_container{
+    width: 100%;
+    display: inline-block;
+  }
+  .message_user{
+    font-weight: bold;
+    font-size: 14px;
+  }
+  .message_content_container{
+    width: 100%;
+    display: inline-block;
+  
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  .message_content{
+    font-weight: normal;
+    font-size: 14px;
+    margin-top: 5px;
+  }
+  
+  
+  
+  
+  .enabled{
+    transition: background-color 0.5s;
+    color: #fff;
+    background-color: #4a40d6; /*#5B7553;*/
+    cursor: pointer;
+  }
+  #title_container.chat_title_container{
+    transition: 0.8s;
+    transition-timing-function: ease-in-out;
+    height: 100px;
+  }
+  #title.chat_title{
+    transition: 0.8s;
+    font-size: 47px;
+  }
+  .loader_container{
+    width: 100%;
+    height: 100%;
+  
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .loader {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+  
+    border-top: 6px solid #D64045;
+    border-bottom: 6px solid #1D3354;
+    border-left: 6px solid #E9FFF9;
+    border-right: 6px solid #E9FFF9;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  @keyframes fadeIn {
+     0% {opacity: 0;}
+     100% {opacity: 1;}
+  }
+  @keyframes blur {
+    0% {filter: blur(5px);}
+    100% {}
+  }
+  ::selection {
+    background-color: #D64045;
+    color: #fff;
+  }
+  /* width */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #555;
+  }
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #D64045;
+    border-radius: 5px;
+  }
+  
+    </style>
+    <script>
+        window.onload = function() {
+    // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyCHFJoIpsjm8SQ-9vdzAlfXgizAN9ITvX4",
+    authDomain: "superchat-90007.firebaseapp.com",
+    projectId: "superchat-90007",
+    storageBucket: "superchat-90007.appspot.com",
+    messagingSenderId: "1003306544245",
+    appId: "1:1003306544245:web:9dcf0ac5216a54a9269c3c",
+    measurementId: "G-E8WSR228DD"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  var db = firebase.database()
+
+  class MEME_CHAT{
+    home(){
+      document.body.innerHTML = ''
+      this.create_title()
+      this.create_join_form()
+    }
+    chat(){
+      this.create_title()
+      this.create_chat()
+    }
+    create_title(){
+      var title_container = document.createElement('div')
+      title_container.setAttribute('id', 'title_container')
+      var title_inner_container = document.createElement('div')
+      title_inner_container.setAttribute('id', 'title_inner_container')
+
+      var title = document.createElement('h1')
+      title.setAttribute('id', 'title')
+      title.textContent = 'SuperChat 😎'
+
+      title_inner_container.append(title)
+      title_container.append(title_inner_container)
+      document.body.append(title_container)
+    }
+    create_join_form(){
+      // YOU MUST HAVE (PARENT = THIS). OR NOT. I'M NOT YOUR BOSS!😂
+      var parent = this;
+
+      var join_container = document.createElement('div')
+      join_container.setAttribute('id', 'join_container')
+      var join_inner_container = document.createElement('div')
+      join_inner_container.setAttribute('id', 'join_inner_container')
+
+      var join_button_container = document.createElement('div')
+      join_button_container.setAttribute('id', 'join_button_container')
+
+      var join_button = document.createElement('button')
+      join_button.setAttribute('id', 'join_button')
+      join_button.innerHTML = 'Join <i class="fas fa-sign-in-alt"></i>'
+
+      var join_input_container = document.createElement('div')
+      join_input_container.setAttribute('id', 'join_input_container')
+
+      var join_input = document.createElement('input')
+      join_input.setAttribute('id', 'join_input')
+      join_input.setAttribute('maxlength', 15)
+      join_input.placeholder = 'Write Your Name Here!!'
+      join_input.onkeyup  = function(){
+        if(join_input.value.length > 0){
+          join_button.classList.add('enabled')
+          join_button.onclick = function(){
+            parent.save_name(join_input.value)
+            join_container.remove()
+            parent.create_chat()
+          }
+        }else{
+          join_button.classList.remove('enabled')
+        }
+      }
+
+      join_button_container.append(join_button)
+      join_input_container.append(join_input)
+      join_inner_container.append(join_input_container, join_button_container)
+      join_container.append(join_inner_container)
+      document.body.append(join_container)
+    }
+    create_load(id){
+      // YOU ALSO MUST HAVE (PARENT = THIS). BUT IT'S WHATEVER THO.
+      var parent = this;
+      var container = document.getElementById(id)
+      container.innerHTML = ''
+
+      var loader_container = document.createElement('div')
+      loader_container.setAttribute('class', 'loader_container')
+
+      var loader = document.createElement('div')
+      loader.setAttribute('class', 'loader')
+
+      loader_container.append(loader)
+      container.append(loader_container)
+
+    }
+    create_chat(){
+      var parent = this;
+      // GET THAT MEMECHAT HEADER OUTTA HERE
+      var title_container = document.getElementById('title_container')
+      var title = document.getElementById('title')
+      title_container.classList.add('chat_title_container')
+      title.classList.add('chat_title')
+
+      var chat_container = document.createElement('div')
+      chat_container.setAttribute('id', 'chat_container')
+
+      var chat_inner_container = document.createElement('div')
+      chat_inner_container.setAttribute('id', 'chat_inner_container')
+
+      var chat_content_container = document.createElement('div')
+      chat_content_container.setAttribute('id', 'chat_content_container')
+
+      var chat_input_container = document.createElement('div')
+      chat_input_container.setAttribute('id', 'chat_input_container')
+
+      var chat_input_send = document.createElement('button')
+      chat_input_send.setAttribute('id', 'chat_input_send')
+      chat_input_send.setAttribute('disabled', true)
+      chat_input_send.innerHTML = `<i class="far fa-paper-plane"></i>`
+
+      var chat_input = document.createElement('input')
+      chat_input.setAttribute('id', 'chat_input')
+      chat_input.setAttribute('maxlength', 1000)
+      chat_input.placeholder = `${localStorage.getItem('name')}. Say something nice...`
+      chat_input.onkeyup  = function(){
+        if(chat_input.value.length > 1){
+          chat_input_send.removeAttribute('disabled')
+          chat_input_send.classList.add('enabled')
+          chat_input_send.onclick = function(){
+            chat_input_send.setAttribute('disabled', true)
+            chat_input_send.classList.remove('enabled')
+            if(chat_input.value.length <= 0){
+              return
+            }
+            parent.create_load('chat_content_container')
+            parent.send_message(chat_input.value)
+            chat_input.value = ''
+            // Focus on the input there after
+            chat_input.focus()
+          }
+        }else{
+          chat_input_send.classList.remove('enabled')
+        }
+      }
+
+      var chat_logout_container = document.createElement('div')
+      chat_logout_container.setAttribute('id', 'chat_logout_container')
+
+      var chat_logout = document.createElement('button')
+      chat_logout.setAttribute('id', 'chat_logout')
+      chat_logout.textContent = `${localStorage.getItem('name')} • logout`
+      chat_logout.onclick = function(){
+        localStorage.clear()
+        parent.home()
+      }
+
+      chat_logout_container.append(chat_logout)
+      chat_input_container.append(chat_input, chat_input_send)
+      chat_inner_container.append(chat_content_container, chat_input_container, chat_logout_container)
+      chat_container.append(chat_inner_container)
+      document.body.append(chat_container)
+      parent.create_load('chat_content_container')
+      this.refresh_chat()
+    }
+    save_name(name){
+      localStorage.setItem('name', name)
+    }
+    send_message(message){
+      var parent = this
+      if(parent.get_name() == null && message == null){
+        return
+      }
+
+      var messages = db.ref('chats/');
+      messages.once('value', function(snapshot) {
+        var index = parseFloat(snapshot.numChildren()) + 1
+        db.ref('chats/' + `message_${index}`).set({
+          name: parent.get_name(),
+          message: message,
+          index: index
+        })
+        .then(function(){
+          parent.refresh_chat()
+        })
+      })
+    }
+    get_name(){
+      if(localStorage.getItem('name') != null){
+        return localStorage.getItem('name')
+      }else{
+        this.home()
+      }
+    }
+    refresh_chat(){
+      var chat_content_container = document.getElementById('chat_content_container')
+
+      var messages = db.ref('chats/');
+      messages.on('value', function(snapshot) {
+        chat_content_container.innerHTML = ''
+        if(snapshot.numChildren() == 0){
+          return
+        }
+        var values = Object.values(snapshot.val());
+        var guide = []
+        var unordered = []
+        var ordered = []
+        for (var i, i = 0; i < values.length; i++) {
+          guide.push(i+1)
+          unordered.push([values[i], values[i].index]);
+        }
+
+        guide.forEach(function(key) {
+          var found = false
+          unordered = unordered.filter(function(item) {
+            if(!found && item[1] == key) {
+              ordered.push(item[0])
+              found = true
+              return false
+            }else{
+              return true
+            }
+          })
+        })
+
+        ordered.forEach(function(data) {
+          var name = data.name
+          var message = data.message
+
+          var message_container = document.createElement('div')
+          message_container.setAttribute('class', 'message_container')
+
+          var message_inner_container = document.createElement('div')
+          message_inner_container.setAttribute('class', 'message_inner_container')
+
+          var message_user_container = document.createElement('div')
+          message_user_container.setAttribute('class', 'message_user_container')
+
+          var message_user = document.createElement('p')
+          message_user.setAttribute('class', 'message_user')
+          message_user.textContent = `${name}`
+
+          var message_content_container = document.createElement('div')
+          message_content_container.setAttribute('class', 'message_content_container')
+
+          var message_content = document.createElement('p')
+          message_content.setAttribute('class', 'message_content')
+          message_content.textContent = `${message}`
+
+          message_user_container.append(message_user)
+          message_content_container.append(message_content)
+          message_inner_container.append(message_user_container, message_content_container)
+          message_container.append(message_inner_container)
+
+          chat_content_container.append(message_container)
+        });
+        // Go to the recent message at the bottom of the container
+        chat_content_container.scrollTop = chat_content_container.scrollHeight;
+      })
+    }
+  }
+
+  app = new MEME_CHAT()
+  // if this is a new user then take them to the home screen
+  if(localStorage.getItem('name') == null){
+    app.home()
+  }else{
+    // else. They are a return user.
+    app.chat()
+  }
+
+}
+
+    </script>
+  </head>
+  <body></body>
+</html>
